@@ -11,7 +11,13 @@
 |
 */
 
+use App\Company;
+
 Route::get('/', function () {
+    Company::create([
+        "name" => "NoisyState",
+    ]);
+
     return view('welcome');
 });
 
