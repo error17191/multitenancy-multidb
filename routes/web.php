@@ -14,13 +14,15 @@
 use App\Company;
 
 Route::get('/', function () {
-    Company::create([
-        "name" => "NoisyState",
-    ]);
-
     return view('welcome');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('companies/create', 'CompaniesController@create')->name('companies.create');
+Route::post('companies', 'CompaniesController@store')->name('companies.store');
+
+Route::get('tenant/{company}', 'TenantController@switch')->name('tenant.switch');
+
