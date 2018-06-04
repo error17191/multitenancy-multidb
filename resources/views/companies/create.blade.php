@@ -13,7 +13,7 @@
 
                             <div class="form-group">
                                 <label for="name" class="control-label">Company name</label>
-                                <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}">
+                                <input autofocus type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}">
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback">
