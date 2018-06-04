@@ -1,9 +1,10 @@
 <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
-{{--            {{ optional(request()->tenant())->name ?: config('app.name') }}--}}
+            {{ optional(request()->tenant())->name ?: config('app.name') }}
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -12,13 +13,14 @@
             @auth
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Companies <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @if($companies->count())
                                 @foreach($companies as $company)
-                                    <a href="#" class="dropdown-item">
+                                    <a href="{{route('tenant.switch',$company)}}" class="dropdown-item">
                                         {{ $company->name }}
                                     </a>
                                 @endforeach
@@ -27,6 +29,9 @@
                             <a class="dropdown-item" href="{{route('companies.create')}}">New company</a>
                         </div>
                     </li>
+                    @tenant
+                    <li><a class="nav-link" href="#">Projects</a></li>
+                    @endtenant
                 </ul>
         @endauth
 
@@ -38,7 +43,8 @@
                     <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 
