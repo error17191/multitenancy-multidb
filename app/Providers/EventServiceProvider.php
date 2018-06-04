@@ -16,6 +16,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Tenant\TenantIdentified' => [
             'App\Listeners\Tenant\RegisterTenant',
         ],
+
+        'App\Events\Tenant\TenantWasCreated' => [
+            'App\Listeners\Tenant\CreateTenantDatabase',
+        ],
     ];
 
     /**
