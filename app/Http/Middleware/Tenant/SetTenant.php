@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Tenant;
 
 use App\Company;
+use App\Events\Tenant\TenantIdentified;
 use Closure;
 
 class SetTenant
@@ -18,9 +19,15 @@ class SetTenant
     {
         $tenant = $this->resolveTenant(session('tenant'));
 
+        if (!$tenant) {
+            return $next($request);
+        }
+
         if (!auth()->user()->companies()->where('company_id', $tenant->id)->first()) {
             return redirect()->route('home');
         }
+
+        event(new TenantIdentified($tenant));
 
         return $next($request);
     }
