@@ -30,7 +30,7 @@
                         </div>
                     </li>
                     @tenant
-                    <li><a class="nav-link" href="#">Projects</a></li>
+                    <li><a class="nav-link" href="{{route('projects.index')}}">Projects</a></li>
                     @endtenant
                 </ul>
         @endauth

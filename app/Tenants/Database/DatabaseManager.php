@@ -10,7 +10,6 @@ class DatabaseManager
     public function createConnection(Tenant $tenant)
     {
         config()->set('database.connections.tenant', $this->getTenantConnection($tenant));
-        dd(config('database.connections.tenant'));
     }
 
     protected function getTenantConnection($tenant)
