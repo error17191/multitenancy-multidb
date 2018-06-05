@@ -6,6 +6,7 @@ use App\Company;
 use App\Tenants\Database\DatabaseManager;
 use Illuminate\Database\Console\Migrations\MigrateCommand;
 use Illuminate\Database\Migrations\Migrator;
+use Symfony\Component\Console\Input\InputOption;
 
 class Migrate extends MigrateCommand
 {
@@ -18,6 +19,7 @@ class Migrate extends MigrateCommand
     protected $description = 'Run Migration for Tenants';
 
     protected $db;
+
     /**
      * Create a new command instance.
      *
@@ -27,6 +29,7 @@ class Migrate extends MigrateCommand
     {
         parent::__construct($migrator);
         $this->setName('tenants:migrate');
+        $this->specifyParameters();
         $this->db = $db;
     }
 
@@ -41,16 +44,25 @@ class Migrate extends MigrateCommand
             return;
         }
 
-        $this->input->setOption('database','tenant');
+        $this->input->setOption('database', 'tenant');
 
         $tenants = Company::get();
-        $tenants->each(function($tenant){
+        $tenants->each(function ($tenant) {
             $this->db->createConnection($tenant);
             $this->db->connectToTenant();
             parent::handle();
             $this->db->purge();
         });
 
+    }
+
+    protected function getOptions()
+    {
+        return array_merge(
+            parent::getOptions(), [
+                ['tenants', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, '', null]
+            ]
+        );
     }
 
     protected function getMigrationPaths()
