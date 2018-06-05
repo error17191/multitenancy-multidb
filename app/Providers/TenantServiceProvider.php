@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\Tenant\Migrate;
+use App\Tenants\Database\DatabaseManager;
 use App\Tenants\Manager;
-use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -37,6 +38,8 @@ class TenantServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(Migrate::class, function () {
+            return new Migrate(app('migrator'),app(DatabaseManager::class));
+        });
     }
 }

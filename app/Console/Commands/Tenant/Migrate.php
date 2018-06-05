@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands\Tenant;
 
+use App\Company;
+use App\Tenants\Database\DatabaseManager;
 use Illuminate\Database\Console\Migrations\MigrateCommand;
+use Illuminate\Database\Migrations\Migrator;
 
 class Migrate extends MigrateCommand
 {
@@ -14,14 +17,17 @@ class Migrate extends MigrateCommand
      */
     protected $description = 'Run Migration for Tenants';
 
+    protected $db;
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Migrator $migrator,DatabaseManager $db)
     {
-        parent::__construct();
+        parent::__construct($migrator);
+        $this->setName('tenants:migrate');
+        $this->db = $db;
     }
 
     /**
@@ -31,6 +37,24 @@ class Migrate extends MigrateCommand
      */
     public function handle()
     {
-        //
+        if (!$this->confirmToProceed()) {
+            return;
+        }
+
+        $this->input->setOption('database','tenant');
+
+        $tenants = Company::get();
+        $tenants->each(function($tenant){
+            $this->db->createConnection($tenant);
+            $this->db->connectToTenant();
+            parent::handle();
+            $this->db->purge();
+        });
+
+    }
+
+    protected function getMigrationPaths()
+    {
+        return [database_path('migrations/Tenant/')];
     }
 }
