@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Console\Commands\Tenant\Migrate;
 use App\Console\Commands\Tenant\Rollback;
+use App\Console\Commands\Tenant\Seed;
 use App\Tenants\Database\DatabaseManager;
 use App\Tenants\Manager;
 use Illuminate\Http\Request;
@@ -45,6 +46,10 @@ class TenantServiceProvider extends ServiceProvider
 
         $this->app->singleton(Rollback::class, function () {
             return new Rollback(app('migrator'),app(DatabaseManager::class));
+        });
+
+        $this->app->singleton(Seed::class, function () {
+            return new Seed(app('db'),app(DatabaseManager::class));
         });
     }
 }
