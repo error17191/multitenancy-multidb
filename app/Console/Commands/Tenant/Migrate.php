@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands\Tenant;
 
-use App\Company;
 use App\Tenants\Database\DatabaseManager;
+use App\Tenants\Traits\Console\AcceptsMultipleTenants;
+use App\Tenants\Traits\Console\FetchesTenant;
 use Illuminate\Database\Console\Migrations\MigrateCommand;
 use Illuminate\Database\Migrations\Migrator;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,6 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 class Migrate extends MigrateCommand
 {
 
+    use FetchesTenant, AcceptsMultipleTenants;
     /**
      * The console command description.
      *
@@ -25,7 +27,7 @@ class Migrate extends MigrateCommand
      *
      * @return void
      */
-    public function __construct(Migrator $migrator,DatabaseManager $db)
+    public function __construct(Migrator $migrator, DatabaseManager $db)
     {
         parent::__construct($migrator);
         $this->setName('tenants:migrate');
@@ -46,8 +48,8 @@ class Migrate extends MigrateCommand
 
         $this->input->setOption('database', 'tenant');
 
-        $tenants = Company::get();
-        $tenants->each(function ($tenant) {
+        $this->tenants($this->option('tenants'))->each(function ($tenant) {
+            $this->info("Migrating Tenant #{$tenant->id}");
             $this->db->createConnection($tenant);
             $this->db->connectToTenant();
             parent::handle();
@@ -56,14 +58,6 @@ class Migrate extends MigrateCommand
 
     }
 
-    protected function getOptions()
-    {
-        return array_merge(
-            parent::getOptions(), [
-                ['tenants', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, '', null]
-            ]
-        );
-    }
 
     protected function getMigrationPaths()
     {
