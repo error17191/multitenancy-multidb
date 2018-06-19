@@ -26,7 +26,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="name" class="control-label">Project name</label>
-                            <input type="text" name="name" id="name" class="form-control">
+                            <input autofocus type="text" name="name" id="name" class="form-control">
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-block">Create</button>

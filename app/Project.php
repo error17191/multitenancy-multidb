@@ -8,4 +8,6 @@ use App\Tenants\Traits\ForTenant;
 class Project extends Model
 {
     use ForTenant;
+
+    protected $fillable = ['name'];
 }
