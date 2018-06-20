@@ -17,7 +17,7 @@ class SetTenant
      */
     public function handle($request, Closure $next)
     {
-        $tenant = $this->resolveTenant(session('tenant'));
+        $tenant = $this->resolveTenant(session()->get('tenant'));
 
         if (!$tenant) {
             return $next($request);
