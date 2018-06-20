@@ -15,6 +15,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\Tenant\TenantIdentified' => [
             'App\Listeners\Tenant\RegisterTenant',
+            'App\Listeners\Tenant\UseTenantFileSystem',
         ],
 
         'App\Events\Tenant\TenantWasCreated' => [

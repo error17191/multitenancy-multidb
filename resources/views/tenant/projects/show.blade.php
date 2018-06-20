@@ -13,14 +13,14 @@
                     <div class="list-group mb-4">
                         <div class="list-group">
                             @foreach($project->files as $file)
-                                <a href="" class="list-group-item">{{ $file->name }}</a>
+                                <a href="{{route('projects.files.show',compact('file', 'project'))}}" class="list-group-item">{{ $file->name }}</a>
                             @endforeach
                         </div>
                     </div>
 
                     <form action="{{ route('projects.files.store', $project) }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        
+
                         <div class="form-group">
                             <label for="file" class="control-label">Upload a file</label>
                             <input type="file" name="file" id="file" class="form-control">

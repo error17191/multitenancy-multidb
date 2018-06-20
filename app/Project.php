@@ -10,4 +10,9 @@ class Project extends Model
     use ForTenant;
 
     protected $fillable = ['name'];
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }
